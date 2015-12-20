@@ -6,6 +6,7 @@ var anim = true,
       c: false,
       pointers: true
     } 
+  , angle = 0;
 
 $(function() {
   var winWidth = $(window).width()
@@ -124,19 +125,20 @@ $(function() {
     plotWave( Canvas[type], Ctx[type], graphOrigin, angle, Color[type] )
   }
 
-  var angle = 0;
+  function updateFrame (angle) {
+    clearCtx('r')
+    update('r', angle);
+    clearCtx('l')
+    update('l', angle + 90);
+    clearCtx('c')
+    update('c', angle - 90);
+  }
+
   function animate () {
     if ( anim ) {
       angle++;
       if ( angle == 360 ) angle = 0
-
-      clearCtx('r')
-      update('r', angle);
-      clearCtx('l')
-      update('l', angle + 90);
-      clearCtx('c')
-      update('c', angle - 90);
-
+      updateFrame(angle);
       window.requestAnimationFrame(animate);
     }
   }
@@ -145,7 +147,7 @@ $(function() {
     animate()
   } init()
 
-  $('input').on('change', function() {
+  $('input[type="checkbox"]').on('change', function() {
     var $inp = $(this)
       , type = $inp.attr('name')
       , checked = $inp.is(':checked')
@@ -163,6 +165,18 @@ $(function() {
 
     if ( 'rlc'.indexOf(type) !== -1 ) {
       $('.' + type).css('opacity', +checked)
+    }
+  });
+
+  $('input[type="number"]').on('keyup', function() {
+    var $inp = $(this)
+      , type = $inp.attr('name')
+
+    if ( type == 'angle' ) {
+      angle = parseInt($inp.val(), 10)
+      $('input[name="anim"]').attr('checked', false);
+      anim = false;
+      updateFrame(angle);
     }
   });
 });
