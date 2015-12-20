@@ -9,8 +9,8 @@ $(function() {
   // Global config
   var anim = true,
       rEnabled = true,
-      lEnabled = false,
-      cEnabled = false
+      lEnabled = true,
+      cEnabled = true
 
   $('.canvas-container').css('height', winHeight/2)
   $('canvas').each(function() {
@@ -31,17 +31,21 @@ $(function() {
   var baseCanvas = $('.base')[0]
     , baseCtx = baseCanvas.getContext('2d') 
     
-    , rCanvas = $('.r')[0]
-    , rCtx = rCanvas.getContext('2d') 
-    , rColor = '#f00'
-
-    , lCanvas = $('.l')[0]
-    , lCtx = lCanvas.getContext('2d') 
-    , lColor = '#0f0'
-
-    , cCanvas = $('.c')[0]
-    , cCtx = cCanvas.getContext('2d')
-    , cColor = '#00f'
+    , Canvas = {
+      r: $('.r')[0],
+      l: $('.l')[0],
+      c: $('.c')[0]
+    }
+    , Ctx = {
+      r: Canvas.r.getContext('2d'),
+      l: Canvas.l.getContext('2d'),
+      c: Canvas.c.getContext('2d')
+    }
+    , Color = {
+      r: '#f00',
+      l: '#0f0',
+      c: '#00f'
+    }
 
   function plotGraph (canvas) {
     var ctx = canvas.getContext('2d')
@@ -99,13 +103,14 @@ $(function() {
     }
   }
 
-  function clearR () {
-    rCtx.clearRect(0, 0, rCanvas.width, rCanvas.height)
+  function clearCtx (type) {
+    Ctx[type].clearRect(0, 0, Canvas.r.width, Canvas.r.height)
   }
 
-  function updateR (angle) {
-    plotArrow( rCanvas, rCtx, lineOrigin, angle, rColor )
-    plotWave( rCanvas, rCtx, graphOrigin, angle, rColor )
+
+  function update (type, angle) {
+    plotArrow( Canvas[type], Ctx[type], lineOrigin, angle, Color[type] )
+    plotWave( Canvas[type], Ctx[type], graphOrigin, angle, Color[type] )
   }
 
   var angle = 0;
@@ -113,15 +118,25 @@ $(function() {
     if ( anim ) {
       angle++;
       if ( angle == 360 ) angle = 0
-      clearR();
-      updateR(angle);
+
+      if ( rEnabled ) {
+        clearCtx('r')
+        update('r', angle);
+      }
+      if ( lEnabled ) {
+        clearCtx('l')
+        update('l', angle + 90);
+      }
+      if ( cEnabled ) {
+        clearCtx('c')
+        update('c', angle - 90);
+      }
+
       window.requestAnimationFrame(animate);
     }
   }
 
   function init () {
-    // plotArrow( rCanvas, rCtx, lineOrigin, 90, rColor )
-    // plotWave( rCanvas, rCtx, graphOrigin, 0, rColor )
     animate()
   } init()
 
