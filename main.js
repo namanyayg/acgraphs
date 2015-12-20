@@ -1,3 +1,11 @@
+// Global config
+var anim = true,
+    enabled = {
+      r: true,
+      l: false,
+      c: false
+    } 
+
 $(function() {
   var winWidth = $(window).width()
     , winHeight = $(window).height()
@@ -6,11 +14,6 @@ $(function() {
   var gap = 40
     , shorter = 40
 
-  // Global config
-  var anim = true,
-      rEnabled = true,
-      lEnabled = true,
-      cEnabled = true
 
   $('.canvas-container').css('height', winHeight/2)
   $('canvas').each(function() {
@@ -119,18 +122,12 @@ $(function() {
       angle++;
       if ( angle == 360 ) angle = 0
 
-      if ( rEnabled ) {
-        clearCtx('r')
-        update('r', angle);
-      }
-      if ( lEnabled ) {
-        clearCtx('l')
-        update('l', angle + 90);
-      }
-      if ( cEnabled ) {
-        clearCtx('c')
-        update('c', angle - 90);
-      }
+      clearCtx('r')
+      update('r', angle);
+      clearCtx('l')
+      update('l', angle + 90);
+      clearCtx('c')
+      update('c', angle - 90);
 
       window.requestAnimationFrame(animate);
     }
@@ -140,6 +137,25 @@ $(function() {
     animate()
   } init()
 
+  $('input').on('change', function() {
+    var $inp = $(this)
+      , type = $inp.attr('name')
+      , checked = $inp.is(':checked')
+      , delay = 0
 
+    if ( type == 'anim' ) {
+      anim = checked;
+      animate();
+      return;
+    }
+
+    if ( !checked ) delay = 500
+
+    if ( 'rlc'.indexOf(type) !== -1 ) {
+      $('.' + type).css('opacity', +checked)
+    }
+
+    console.log(type, checked);
+  });
 
 });

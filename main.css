@@ -118,11 +118,16 @@ a:hover {
   border-bottom: 1px solid #ccc;
 }
 
+label {
+  display: block;
+  padding: .5em 0;
+  margin: .5em 0;
+}
+
 input {
   padding: .5em 0 .5em .5em;
   border: thin solid #ccc;
   margin: 0 .5em 0 0;
-  width: 4em;
 }
 
 .canvas-container {
@@ -136,9 +141,22 @@ canvas {
   position: absolute;
   top: 0;
   left: 50%;
+  -webkit-transition: all .5s ease;
+     -moz-transition: all .5s ease;
+      -ms-transition: all .5s ease;
+       -o-transition: all .5s ease;
+          transition: all .5s ease;
 }
 
 .base { z-index: 1 }
 .r { z-index: 2 }
 .l { z-index: 3 }
 .c { z-index: 4 }
+
+.l, .c { opacity: 0 }
+
+.colophon {
+  margin: 2em 0;
+  padding: 2em;
+  background: #f3f3f3;
+}
