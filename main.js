@@ -3,7 +3,8 @@ var anim = true,
     enabled = {
       r: true,
       l: false,
-      c: false
+      c: false,
+      pointers: true
     } 
 
 $(function() {
@@ -97,7 +98,7 @@ $(function() {
     ctx.stroke()
 
     // Pointer
-    ctx.setLineDash([2, 5])
+    ctx.setLineDash([1, enabled.pointers ? 11 : 9999])
     ctx.lineTo(graphOrigin.x, graphOrigin.y - (Math.sin(angle) * lineW))
     ctx.stroke()
 
@@ -155,11 +156,13 @@ $(function() {
       return;
     }
 
+    if ( type == 'pointers' ) {
+      enabled.pointers = checked;
+      return;
+    }
+
     if ( 'rlc'.indexOf(type) !== -1 ) {
       $('.' + type).css('opacity', +checked)
     }
-
-    console.log(type, checked);
   });
-
 });
