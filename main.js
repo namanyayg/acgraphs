@@ -87,13 +87,20 @@ $(function() {
 
     ctx.beginPath()
 
+    // Vector
+    ctx.setLineDash([0, 0])
     ctx.moveTo(o.x, o.y)
     ctx.lineTo( 
       o.x + (lineW * Math.cos(angle)), 
       o.y + (lineW * -Math.sin(angle)) 
     )
-
     ctx.stroke()
+
+    // Pointer
+    ctx.setLineDash([2, 5])
+    ctx.lineTo(graphOrigin.x, graphOrigin.y - (Math.sin(angle) * lineW))
+    ctx.stroke()
+
     ctx.closePath()
   }
 
@@ -141,15 +148,12 @@ $(function() {
     var $inp = $(this)
       , type = $inp.attr('name')
       , checked = $inp.is(':checked')
-      , delay = 0
 
     if ( type == 'anim' ) {
       anim = checked;
       animate();
       return;
     }
-
-    if ( !checked ) delay = 500
 
     if ( 'rlc'.indexOf(type) !== -1 ) {
       $('.' + type).css('opacity', +checked)
