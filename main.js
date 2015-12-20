@@ -98,8 +98,8 @@ $(function() {
     var phase = toRad(phase);
 
     ctx.fillStyle = color
-    for ( var i = 0; i <= lineLen; i += .1 ) {
-      ctx.fillRect( o.x + i, o.y - (Math.sin(toRad(i) + phase) * lineW), 1, 1)
+    for ( var i = 0; i <= lineLen; i += .5 ) {
+      ctx.fillRect( o.x + i, o.y - (Math.sin(toRad(i) + phase) * lineW), 2, 2)
     }
   }
 
