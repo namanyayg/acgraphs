@@ -138,7 +138,7 @@ $(function() {
     if ( anim ) {
       angle++;
       if ( angle == 360 ) angle = 0
-      updateFrame(angle);
+      updateFrame(360 - angle);
       window.requestAnimationFrame(animate);
     }
   }
